@@ -267,9 +267,9 @@ if DoPlots == 1 % proceed to plotting only if DoPlots == 1
 
         axis([0 max_x min_y max_y]);
         if ModelFit == 1
-            title({SampleName; ['PDF residuals for \Delta\tau: ', num2str(TimeGap*i), ' ms']}, 'FontSize',8, 'FontName', 'Helvetica', 'Color', 'k');
+            title({SampleName; ['PDF residuals for \Delta \tau: ', num2str(TimeGap*i), ' ms']}, 'FontSize',8, 'FontName', 'Helvetica', 'Color', 'k');
         elseif ModelFit == 2
-            title({SampleName; ['CDF residuals for \Delta\tau: ', num2str(TimeGap*i), ' ms']}, 'FontSize',8, 'FontName', 'Helvetica', 'Color', 'k');
+            title({SampleName; ['CDF residuals for \Delta \tau: ', num2str(TimeGap*i), ' ms']}, 'FontSize',8, 'FontName', 'Helvetica', 'Color', 'k');
         end
         ylabel('residuals', 'FontSize',9, 'FontName', 'Helvetica', 'Color', 'k');
         xlabel('displacements (\mu m)', 'FontSize',9, 'FontName', 'Helvetica', 'Color', 'k');
@@ -293,7 +293,7 @@ if DoPlots == 1 % proceed to plotting only if DoPlots == 1
         plot(HistVecJumpsCDF, model_CDF(i,:), 'k-', 'LineWidth', 1);
 
         axis([0 MaxJumpPlotCDF 0 1.05]);
-        title({SampleName; ['CDF for \Delta\tau: ', num2str(TimeGap*i), ' ms']}, 'FontSize',8, 'FontName', 'Helvetica', 'Color', 'k', 'Interpreter', 'none');
+        title({SampleName; ['CDF for \Delta\tau: ', num2str(TimeGap*i), ' ms']}, 'FontSize',8, 'FontName', 'Helvetica', 'Color', 'k');
         ylabel('displacement CDF', 'FontSize',9, 'FontName', 'Helvetica', 'Color', 'k');
         xlabel('displacements (\mu m)', 'FontSize',9, 'FontName', 'Helvetica', 'Color', 'k');
         legend('raw data', 'Model fit', 'Location', 'SouthEast');

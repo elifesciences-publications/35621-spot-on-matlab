@@ -31,8 +31,16 @@ Min3Traj = 0; %for counting number of min3 trajectories;
 CellJumps = 0; %for counting the total number of jumps
 CellJumps_used = 0; %for counting the total number of jumps actually used
 TransFrames = TimePoints+GapsAllowed*(TimePoints-1); TransLengths = struct; 
+% Matlab strongly prefers memory to be pre-initialized: to avoid appending
+% displacements and thus increasing the vector size with each iteration, do
+% the following:
+%   - make an educated gues as to vector length and initialize with zeroes
+%   - keep a counter of actual number of displacements and then remove the
+%   padding at the end
+% This is a bit inelegent, but it improves performance
 for i=1:TransFrames
-    TransLengths(1,i).Step = []; %each iteration is a different number of timepoints
+    TransLengths(1,i).Step = zeros(1,6000); %each iteration is a different number of timepoints
+    TransLengths(1,i).Counter = 0; 
 end
 JumpsPerdT = zeros(TransFrames,1); % for counting how many jumps per dT
 
@@ -56,8 +64,10 @@ if UseEntireTraj == 1 %Use all displacements of the trajectory
                     %timepoints
                     CurrXY_points = vertcat(trackedPar(i).xy(k,:), trackedPar(i).xy(k+n,:));
                     CurrFrameJump = trackedPar(i).Frame(k+n) - trackedPar(i).Frame(k);
+                    % update the counter:
+                    TransLengths(1,CurrFrameJump).Counter = TransLengths(1,CurrFrameJump).Counter + 1;
                     %Calculate the distance between the pair of points
-                    TransLengths(1,CurrFrameJump).Step = horzcat(TransLengths(1,CurrFrameJump).Step, pdist(CurrXY_points));
+                    TransLengths(1,CurrFrameJump).Step(1,TransLengths(1,CurrFrameJump).Counter) = pdist(CurrXY_points);
                     % increment the number of jumps per dT counter:
                     JumpsPerdT(CurrFrameJump) =  JumpsPerdT(CurrFrameJump) + 1;
                 end
@@ -87,8 +97,10 @@ elseif UseEntireTraj == 0 % Use only the first JumpsToConsider displacements
                     %timepoints
                     CurrXY_points = vertcat(trackedPar(i).xy(k,:), trackedPar(i).xy(k+n,:));
                     CurrFrameJump = trackedPar(i).Frame(k+n) - trackedPar(i).Frame(k);
+                    % update the counter:
+                    TransLengths(1,CurrFrameJump).Counter = TransLengths(1,CurrFrameJump).Counter + 1;
                     %Calculate the distance between the pair of points
-                    TransLengths(1,CurrFrameJump).Step = horzcat(TransLengths(1,CurrFrameJump).Step, pdist(CurrXY_points));
+                    TransLengths(1,CurrFrameJump).Step(1,TransLengths(1,CurrFrameJump).Counter) = pdist(CurrXY_points);
                     % increment the number of jumps per dT counter:
                     JumpsPerdT(CurrFrameJump) =  JumpsPerdT(CurrFrameJump) + 1;
                 end
@@ -96,6 +108,12 @@ elseif UseEntireTraj == 0 % Use only the first JumpsToConsider displacements
         end  
     end
 end 
+
+% Remove padding introduces in the step/displacement vectors:
+for i=1:TransFrames
+    TransLengths(1,i).Step = TransLengths(1,i).Step(1,1:TransLengths(1,i).Counter);
+    % this removes all of the "zeroes" from the padding
+end
 
 %CALCULATE THE PDF HISTOGRAMS
 JumpProb = zeros(TimePoints-1, length(HistVecJumps));

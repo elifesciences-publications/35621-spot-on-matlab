@@ -1,4 +1,4 @@
-%   SpotOn_main.m
+%   SpotOn_main.m      VERSION: 1.04
 %   Copyright (C) 2017 Anders Sejr Hansen & Maxime Woringer
 clear; clc; clearvars -global; close all; 
 
@@ -48,7 +48,7 @@ ModelFit = 2; %Use 1 for PDF-fitting; Use 2 for CDF-fitting
 DoSingleCellFit = 1; %Set to 1 if you want to analyse all single cells individually (slow). 
 NumberOfStates = 2; % If NumberOfStates=2, a 2-state model will be used; If NumberOfStates=3, a 3-state model will be used 
 FitIterations = 2; % Input the desired number of fitting iterations (random initial parameter guess for each)
-FitLocError = 0; % If FitLocError=1, the localization error will fitted from the data
+FitLocError = 1; % If FitLocError=1, the localization error will fitted from the data
 FitLocErrorRange = [0.010 0.075]; % min/max for model-fitted localization error in micrometers.
 LocError = 0.035; % If FitLocError=0, LocError in units of micrometers will be used. 
 UseWeights = 0; % If UseWeights=0, all TimePoints are given equal weights. If UseWeights=1, TimePoints are weighted according to how much data there is. E.g. 1dT will be weighted more than 5dT.
