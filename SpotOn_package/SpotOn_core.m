@@ -84,6 +84,7 @@ if DoSingleCellFit == 1
     last_integer = 0;
     PlotIndex = 0;
     CellNumb = 1;
+    PlotNumber = 1;
 
     % loop over all replicates and all cells in each replicate
     for RepIter=1:length(data_struct)
@@ -95,10 +96,18 @@ if DoSingleCellFit == 1
             %neccesary:
             PlotIndex = PlotIndex + 1;
             if ceil(CellNumb/8) > last_integer
+                % save the single-cell plots:
+                if SavePlot == 1 && PlotIndex > 1
+                    set(figure1,'Units','Inches');
+                    pos = get(figure1,'Position');
+                    set(figure1,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)])
+                    print(figure1,[save_path, SampleName, '_SingleCell_FitType',num2str(ModelFit), 'FitLocError', num2str(FitLocError), 'NumStates', num2str(NumberOfStates), 'Plot', num2str(PlotNumber-1),'.pdf'],'-dpdf','-r0')
+                end
                 %Plot everything on a big figure:
                 figure1 = figure('position',[100 100 min([1600 screen_size_vector(3)]) min([1200 screen_size_vector(4)]);]); %[x y width height]
                 last_integer = ceil(CellNumb/8);
                 PlotIndex = 1;
+                PlotNumber = PlotNumber + 1;
             end
             
             
@@ -141,7 +150,7 @@ if DoSingleCellFit == 1
                 text(0.6*MaxJumpPlotPDF, new_level+0.5*histogram_spacer, ['\Delta\tau: ', num2str(TimeGap*i), ' ms'], 'HorizontalAlignment','left', 'FontSize',9, 'FontName', 'Helvetica');
             end
             axis([0 MaxJumpPlotPDF 0 1.05*(max(JumpProb(end,:))+(size(JumpProb,1)-1)*histogram_spacer)]);
-            title(PlotTitle, 'FontSize',9, 'FontName', 'Helvetica', 'Color', 'k');
+            title(PlotTitle, 'FontSize',8, 'FontName', 'Helvetica', 'Color', 'k', 'Interpreter', 'none');
             set(gca,'YColor','w')
             ylabel('Probability', 'FontSize',9, 'FontName', 'Helvetica', 'Color', 'k');
             xlabel('jump length \mu m', 'FontSize',9, 'FontName', 'Helvetica', 'Color', 'k');
@@ -172,7 +181,7 @@ if DoSingleCellFit == 1
         set(figure1,'Units','Inches');
         pos = get(figure1,'Position');
         set(figure1,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)])
-        print(figure1,[save_path, SampleName, '_SingleCell_FitType',num2str(ModelFit), 'FitLocError', num2str(FitLocError),'.pdf'],'-dpdf','-r0')
+        print(figure1,[save_path, SampleName, '_SingleCell_FitType',num2str(ModelFit), 'FitLocError', num2str(FitLocError), 'NumStates', num2str(NumberOfStates), 'Plot', num2str(PlotNumber-1),'.pdf'],'-dpdf','-r0')
     end
     Output_struct(1).single_cell_model_params = single_cell_model_params;
     Output_struct(1).single_cell_model_PDF = single_cell_model_PDF;
@@ -271,7 +280,7 @@ if DoPlots == 1 % proceed to plotting only if DoPlots == 1
         set(figure3,'Units','Inches');
         pos = get(figure3,'Position');
         set(figure3,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)]);
-        print(figure3,[save_path, SampleName, '_residuals_FitType',num2str(ModelFit), '.pdf'],'-dpdf','-r0');
+        print(figure3,[save_path, SampleName, '_residuals_FitType',num2str(ModelFit), 'NumStates', num2str(NumberOfStates), '.pdf'],'-dpdf','-r0');
     end
 
     %PLOT CDFs of DISPLACEMENTS AND OF FIT
@@ -284,7 +293,7 @@ if DoPlots == 1 % proceed to plotting only if DoPlots == 1
         plot(HistVecJumpsCDF, model_CDF(i,:), 'k-', 'LineWidth', 1);
 
         axis([0 MaxJumpPlotCDF 0 1.05]);
-        title({SampleName; ['CDF for \Delta\tau: ', num2str(TimeGap*i), ' ms']}, 'FontSize',8, 'FontName', 'Helvetica', 'Color', 'k');
+        title({SampleName; ['CDF for \Delta\tau: ', num2str(TimeGap*i), ' ms']}, 'FontSize',8, 'FontName', 'Helvetica', 'Color', 'k', 'Interpreter', 'none');
         ylabel('displacement CDF', 'FontSize',9, 'FontName', 'Helvetica', 'Color', 'k');
         xlabel('displacements (\mu m)', 'FontSize',9, 'FontName', 'Helvetica', 'Color', 'k');
         legend('raw data', 'Model fit', 'Location', 'SouthEast');
@@ -295,7 +304,7 @@ if DoPlots == 1 % proceed to plotting only if DoPlots == 1
         set(figure4,'Units','Inches');
         pos = get(figure4,'Position');
         set(figure4,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)]);
-        print(figure4,[save_path, SampleName, '_mergedCDFs_FitType',num2str(ModelFit), '.pdf'],'-dpdf','-r0');
+        print(figure4,[save_path, SampleName, '_mergedCDFs_FitType',num2str(ModelFit), 'NumStates', num2str(NumberOfStates), '.pdf'],'-dpdf','-r0');
     end
 
     %PLOT THE HISTOGRAM OF TRANSLOCATIONS
@@ -315,7 +324,7 @@ if DoPlots == 1 % proceed to plotting only if DoPlots == 1
         text(0.6*MaxJumpPlotPDF, new_level+0.5*histogram_spacer, ['\Delta\tau: ', num2str(TimeGap*i), ' ms'], 'HorizontalAlignment','left', 'FontSize',9, 'FontName', 'Helvetica');
     end
     axis([0 MaxJumpPlotPDF 0 1.05*(max(JumpProb(end,:))+(size(JumpProb,1)-1)*histogram_spacer)]);
-    title(PlotTitle, 'FontSize',9, 'FontName', 'Helvetica', 'Color', 'k');
+    title(PlotTitle, 'FontSize',9, 'FontName', 'Helvetica', 'Color', 'k', 'Interpreter', 'none');
     set(gca,'YColor','w')
     ylabel('Probability', 'FontSize',9, 'FontName', 'Helvetica', 'Color', 'k');
     xlabel('jump length \mu m', 'FontSize',9, 'FontName', 'Helvetica', 'Color', 'k');
@@ -325,7 +334,7 @@ if DoPlots == 1 % proceed to plotting only if DoPlots == 1
         set(figure5,'Units','Inches');
         pos = get(figure5,'Position');
         set(figure5,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)]);
-        print(figure5,[save_path, SampleName, '_mergedPDFs_FitType',num2str(ModelFit), 'FitLocError', num2str(FitLocError), '.pdf'],'-dpdf','-r0');
+        print(figure5,[save_path, SampleName, '_mergedPDFs_FitType',num2str(ModelFit), 'FitLocError', num2str(FitLocError), 'NumStates', num2str(NumberOfStates), '.pdf'],'-dpdf','-r0');
     end 
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
