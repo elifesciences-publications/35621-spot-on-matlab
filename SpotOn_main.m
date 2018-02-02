@@ -35,8 +35,8 @@ GapsAllowed = 1; % The number of allowed gaps in the tracking
 %%%%% Data Processing Parameters:
 TimePoints = 8; % How many delays to consider: N timepoints yield N-1 delays
 BinWidth = 0.010; % Bin Width for computing histogram in micrometers (only for PDF; Spot-On uses 1 nm bins for CDF)
-UseAllTraj = 0; % If UseAllTraj=1, all data from all trajectories will be used; If UseAllTraj=0, only the first X displacements will be used
-JumpsToConsider = 4; % If UseAllTraj=0, the first JumpsToConsiders displacements for each dT where possible will be used. 
+UseEntireTraj = 0; % If UseEntireTraj=1, all dispplacements from all trajectories will be used; If UseEntireTraj=0, only the first X displacements will be used. NB. this variable was previously called UseAllTraj but has been renamed UseEntireTraj
+JumpsToConsider = 4; % If UseEntireTraj=0, the first JumpsToConsiders displacements for each dT where possible will be used. 
 MaxJumpPlotPDF = 1.05; % the cut-off for displaying the displacement histograms plots
 MaxJumpPlotCDF = 3.05; % the cut-off for displaying the displacement CDF plots
 MaxJump = 5.05; % the overall maximal displacements to consider in micrometers
@@ -53,10 +53,10 @@ FitLocErrorRange = [0.010 0.075]; % min/max for model-fitted localization error 
 LocError = 0.035; % If FitLocError=0, LocError in units of micrometers will be used. 
 UseWeights = 0; % If UseWeights=0, all TimePoints are given equal weights. If UseWeights=1, TimePoints are weighted according to how much data there is. E.g. 1dT will be weighted more than 5dT.
 D_Free_2State = [0.5 25]; % min/max Diffusion constant for Free state in 2-state model (units um^2/s)
-D_Bound_2State = [0.0001 0.08]; % min/max Diffusion constant for Bound state in 2-state model (units um^2/s)
+D_Bound_2State = [0.0001 0.05]; % min/max Diffusion constant for Bound state in 2-state model (units um^2/s)
 D_Free1_3State = [0.5 25]; % min/max Diffusion constant #1 for Free state in 3-state model (units um^2/s)
 D_Free2_3State = [0.5 25]; % min/max Diffusion constant #2 for Free state in 3-state model (units um^2/s)
-D_Bound_3State = [0.0001 0.08]; % min/max Diffusion constant for Bound state in 3-state model (units um^2/s)
+D_Bound_3State = [0.0001 0.05]; % min/max Diffusion constant for Bound state in 3-state model (units um^2/s)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%% DEFINE DATA SET PARAMETERS %%%%%%%%%%%%%%%%%%%%%%%%
@@ -82,7 +82,7 @@ end
 
 %%%%%%%%%%%%%%%%%%%%%%%%% SpotOn core mechanics %%%%%%%%%%%%%%%%%%%%%%%%%%%
 Params = struct(); % Use Params to feed all the relevant data/parameters into the relevant functions
-Params.TimeGap = TimeGap; Params.dZ = dZ; Params.GapsAllowed = GapsAllowed; Params.TimePoints = TimePoints; Params.BinWidth = BinWidth; Params.UseAllTraj = UseAllTraj; Params.DoPlots = DoPlots; Params.UseWeights = UseWeights;
+Params.TimeGap = TimeGap; Params.dZ = dZ; Params.GapsAllowed = GapsAllowed; Params.TimePoints = TimePoints; Params.BinWidth = BinWidth; Params.UseEntireTraj = UseEntireTraj; Params.DoPlots = DoPlots; Params.UseWeights = UseWeights;
 Params.JumpsToConsider = JumpsToConsider; Params.MaxJumpPlotPDF = MaxJumpPlotPDF; Params.MaxJumpPlotCDF = MaxJumpPlotCDF; Params.MaxJump = MaxJump; Params.SavePlot = SavePlot; Params.ModelFit = ModelFit;
 Params.DoSingleCellFit = DoSingleCellFit; Params.FitIterations = FitIterations; Params.FitLocError = FitLocError; Params.FitLocErrorRange = FitLocErrorRange; Params.LocError = LocError; Params.NumberOfStates = NumberOfStates;
 Params.D_Free_2State = D_Free_2State; Params.D_Bound_2State = D_Bound_2State; Params.D_Free1_3State = D_Free1_3State; Params.D_Free2_3State = D_Free2_3State; Params.D_Bound_3State = D_Bound_3State;

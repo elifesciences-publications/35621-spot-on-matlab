@@ -18,6 +18,14 @@ UseWeights=1, Spot-On will now weigh each histogram at each dT
 according to the relative amount of data in the least-squares
 fitting.
 
+Update 2018-02-02
+The variable controlling whether all displacements from all
+trajectories will be used has been renamed. "UseAllTraj" is now called
+"UseEntireTraj" based on user feedback that the original name was
+confusing. We would like to clarify that all trajectories are always
+used, but that UseEntireTraj controls whether all displacements from a
+given trajectory is used (yes if =1, no if =0).  
+
 # How to cite
 
 Please acknowledge Spot-On in your publications:

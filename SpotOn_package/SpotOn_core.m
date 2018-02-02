@@ -20,7 +20,7 @@ dT = Params.TimeGap/1000; % convert to seconds
 GapsAllowed = Params.GapsAllowed; 
 TimePoints = Params.TimePoints; 
 BinWidth = Params.BinWidth; 
-UseAllTraj = Params.UseAllTraj;
+UseEntireTraj = Params.UseEntireTraj;
 JumpsToConsider = Params.JumpsToConsider; 
 MaxJumpPlotPDF = Params.MaxJumpPlotPDF; 
 MaxJumpPlotCDF = Params.MaxJumpPlotCDF; 
@@ -116,7 +116,7 @@ if DoSingleCellFit == 1
             % use function "compile_histograms_single_cell.m" to compile histograms
             disp('loading in trajectories and compiling histograms...');
             %full_path = [curr_path, char(workspaces(WorkIter)), '.mat'] % full_path of workspace to be loaded
-            [JumpProb, JumpProbCDF, Min3Traj, CellLocs, CellJumps, CellJumps_used, CellFrames, TrajNumb, JumpsPerdT] = compile_histograms_single_cell([curr_path, char(workspaces(WorkIter))], UseAllTraj, GapsAllowed, TimePoints, JumpsToConsider);
+            [JumpProb, JumpProbCDF, Min3Traj, CellLocs, CellJumps, CellJumps_used, CellFrames, TrajNumb, JumpsPerdT] = compile_histograms_single_cell([curr_path, char(workspaces(WorkIter))], UseEntireTraj, GapsAllowed, TimePoints, JumpsToConsider);
             
             
             %%%%% STEP 2: PERFORM MODEL-FITTING OF THE CURRENT CELL
@@ -208,7 +208,7 @@ disp('===========================================================');
 disp('merging data from all cells and replicates...');
 disp('loading in trajectories and compiling histograms...'); tic;
 %%%%% STEP 1: LOAD IN MERGED DATA AND COMPILE HISTOGRAMS
-[JumpProb, JumpProbCDF, Min3Traj, TotalLocs, TotalFrames, TotalJumps, TotalJumps_used, TrajNumb, DyeSurvivalProb, DyeHistVec, DyeMean, JumpsPerdT] = compile_histograms_many_cells( data_struct, UseAllTraj, GapsAllowed, TimePoints, JumpsToConsider );
+[JumpProb, JumpProbCDF, Min3Traj, TotalLocs, TotalFrames, TotalJumps, TotalJumps_used, TrajNumb, DyeSurvivalProb, DyeHistVec, DyeMean, JumpsPerdT] = compile_histograms_many_cells( data_struct, UseEntireTraj, GapsAllowed, TimePoints, JumpsToConsider );
 toc;
 %%%%% STEP 2: PERFORM MODEL-FITTING OF THE MERGED DATA
 disp('performing model fitting of displacement histograms...'); tic;

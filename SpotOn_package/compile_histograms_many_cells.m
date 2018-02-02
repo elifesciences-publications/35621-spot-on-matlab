@@ -1,4 +1,4 @@
-function [JumpProb, JumpProbCDF, Min3Traj, TotalLocs, TotalFrames, TotalJumps, TotalJumps_used, TrajNumb, DyeSurvivalProb, DyeHistVec, DyeMean, JumpsPerdT] = compile_histograms_many_cells( data_struct, UseAllTraj, GapsAllowed, TimePoints, JumpsToConsider )
+function [JumpProb, JumpProbCDF, Min3Traj, TotalLocs, TotalFrames, TotalJumps, TotalJumps_used, TrajNumb, DyeSurvivalProb, DyeHistVec, DyeMean, JumpsPerdT] = compile_histograms_many_cells( data_struct, UseEntireTraj, GapsAllowed, TimePoints, JumpsToConsider )
 %compile_histograms_many_cells Compile histograms for many cells
 %   the input will be a structure containing the neccesary info to load in
 %   trackedPar from many single cells
@@ -58,7 +58,7 @@ end
 JumpsPerdT = zeros(TransFrames,1); % for counting how many jumps per dT
 
 % compile all of the jumps
-if UseAllTraj == 1 %Use all of the trajectory
+if UseEntireTraj == 1 %Use all displacements of the trajectory
     for i=1:length(AllData)
         % save length of the trajectory
         TrajLengthHist(1,i) = max(AllData(i).Frame) - min(AllData(i).Frame) + 1;
@@ -89,7 +89,7 @@ if UseAllTraj == 1 %Use all of the trajectory
     end
     TotalJumps = JumpsPerdT(1,1);
     TotalJumps_used = TotalJumps; % all jumps were used, so these are the same
-elseif UseAllTraj == 0 %Use only the first JumpsToConsider displacements
+elseif UseEntireTraj == 0 %Use only the first JumpsToConsider displacements
     for i=1:length(AllData)
         % save length of the trajectory
         TrajLengthHist(1,i) = max(AllData(i).Frame) - min(AllData(i).Frame) + 1;

@@ -1,4 +1,4 @@
-function [JumpProb, JumpProbCDF, Min3Traj, CellLocs, CellJumps, CellJumps_used, CellFrames, TrajNumb, JumpsPerdT] = compile_histograms_single_cell( full_path, UseAllTraj, GapsAllowed, TimePoints, JumpsToConsider )
+function [JumpProb, JumpProbCDF, Min3Traj, CellLocs, CellJumps, CellJumps_used, CellFrames, TrajNumb, JumpsPerdT] = compile_histograms_single_cell( full_path, UseEntireTraj, GapsAllowed, TimePoints, JumpsToConsider )
 %COMPILE_HISTOGRAMS_SINGLE_CELL Compiles histograms from a single cell
 %   Use the function for compiling histograms and other relevant info from
 %   a single cell
@@ -37,7 +37,7 @@ end
 JumpsPerdT = zeros(TransFrames,1); % for counting how many jumps per dT
 
 % compile all of the jumps
-if UseAllTraj == 1 %Use all of the trajectory
+if UseEntireTraj == 1 %Use all displacements of the trajectory
     for i=1:length(trackedPar)
         CurrTrajLength = size(trackedPar(i).xy,1);
         %save lengths
@@ -66,7 +66,7 @@ if UseAllTraj == 1 %Use all of the trajectory
     end
     CellJumps = JumpsPerdT(1,1);
     CellJumps_used = CellJumps; % all jumps were used, so these are the same
-elseif UseAllTraj == 0 % Use only the first JumpsToConsider displacements
+elseif UseEntireTraj == 0 % Use only the first JumpsToConsider displacements
     for i=1:length(trackedPar)
         CurrTrajLength = size(trackedPar(i).xy,1);
         if CurrTrajLength >= 3
