@@ -3,6 +3,14 @@ function [Output_struct] = SpotOn_core(Params)
 %   The function takes the user-input and performs data processing and
 %   function fitting
 
+% This is Spot-On Matlab version 1.04. 
+disp('--- Running Spot-On Matlab Version 1.04 ---');
+disp('Please see <a href = "https://gitlab.com/tjian-darzacq-lab/spot-on-matlab">GitLab</a> for updates');
+disp('Full documentation: <a href = "https://SpotOn.berkeley.edu/">Spot-On</a>');
+disp('Please cite the <a href = "https://elifesciences.org/articles/33125">Spot-On paper</a>, if you use Spot-On in a publication');
+
+
+
 % define neccesary global parameters:
 global LocError dT HistVecJumps dZ HistVecJumpsCDF ModelFit FitLocError Z_corr_a Z_corr_b JumpsPerdT UseWeights
 Output_struct = struct([]); % for saving outputs
