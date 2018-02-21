@@ -139,7 +139,7 @@ if DoSingleCellFit == 1
             [model_PDF, model_CDF] = GenerateModelFitforPlot(model_params, JumpProb, JumpProbCDF, NumberOfStates);
 
             % Generate a plot title with all the relevant info
-            PlotTitle = GeneratePlotTitle(workspaces{RepIter}, NumberOfStates, model_params, Min3Traj, CellLocs, CellJumps, CellJumps_used, CellFrames, TrajNumb);
+            PlotTitle = GeneratePlotTitle(workspaces{WorkIter}, NumberOfStates, model_params, Min3Traj, CellLocs, CellJumps, CellJumps_used, CellFrames, TrajNumb);
             
             % Do actual plotting
             subplot(2,4,PlotIndex);
