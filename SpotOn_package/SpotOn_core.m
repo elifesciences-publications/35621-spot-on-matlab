@@ -3,8 +3,8 @@ function [Output_struct] = SpotOn_core(Params)
 %   The function takes the user-input and performs data processing and
 %   function fitting
 
-% This is Spot-On Matlab version 1.04. 
-disp('--- Running Spot-On Matlab Version 1.04 ---');
+% This is Spot-On Matlab version 1.05. 
+disp('--- Running Spot-On Matlab Version 1.05 ---');
 disp('Please see <a href = "https://gitlab.com/tjian-darzacq-lab/spot-on-matlab">GitLab</a> for updates');
 disp('Full documentation: <a href = "https://SpotOn.berkeley.edu/">Spot-On</a>');
 disp('Please cite the <a href = "https://elifesciences.org/articles/33125">Spot-On paper</a>, if you use Spot-On in a publication');
@@ -113,6 +113,7 @@ if DoSingleCellFit == 1
                 end
                 %Plot everything on a big figure:
                 figure1 = figure('position',[100 100 min([1600 screen_size_vector(3)]) min([1200 screen_size_vector(4)]);]); %[x y width height]
+                set(gcf, 'Name',['Spot-On Matlab: Single-cell analysis #', num2str(PlotNumber)]);
                 last_integer = ceil(CellNumb/8);
                 PlotIndex = 1;
                 PlotNumber = PlotNumber + 1;
@@ -235,6 +236,7 @@ if DoPlots == 1 % proceed to plotting only if DoPlots == 1
     
     % PLOT THE SURVIVAL PROBABILITY OF THE FLUOROPHORE
     figure2 = figure('position',[400 100 300 275]); %[x y width height]
+    set(gcf, 'Name','Spot-On Matlab: distribution of trajectory lengths');
     hold on;
     plot(DyeHistVec, DyeSurvivalProb, 'ko', 'MarkerSize', 6, 'MarkerFaceColor', 'r');
     axis([1 51 0.001 1.01]);
@@ -258,11 +260,12 @@ if DoPlots == 1 % proceed to plotting only if DoPlots == 1
     %   so PDF residuals for PDF-fitting
     %   or CDF residuals for CDF-fitting
     figure3 = figure('position',[300 300 plot_width plot_height]); %[x y width height]
+    set(gcf, 'Name','Spot-On Matlab: residuals');
     % find max_y for plot
     max_y = max([0.1 max(max(abs(residuals)))]); min_y = -max_y;
     for i=1:min([12 size(residuals,1)])
         colour_element = colour(round(i/size(residuals,1)*size(colour,1)),:);
-        subplot(3,4,i);
+        ax1(i) = subplot(3,4,i);
         hold on;
         if ModelFit == 1
             plot(HistVecJumps, residuals(i,:), '-', 'Color', colour_element, 'LineWidth', 2);
@@ -283,6 +286,7 @@ if DoPlots == 1 % proceed to plotting only if DoPlots == 1
         xlabel('displacements (\mu m)', 'FontSize',9, 'FontName', 'Helvetica', 'Color', 'k');
         hold off;
     end
+    linkaxes(ax1,'xy'); % link all the axes to synchronize any zooming
     
     if SavePlot == 1
         set(figure3,'Units','Inches');
@@ -293,9 +297,10 @@ if DoPlots == 1 % proceed to plotting only if DoPlots == 1
 
     %PLOT CDFs of DISPLACEMENTS AND OF FIT
     figure4 = figure('position',[100 100 plot_width plot_height]); %[x y width height]
+    set(gcf, 'Name','Spot-On Matlab: CDF of displacements vs. model-fit');
     for i=1:min([12 size(JumpProbCDF,1)])
         colour_element = colour(round(i/size(JumpProbCDF,1)*size(colour,1)),:);
-        subplot(3,4,i);
+        ax2(i) = subplot(3,4,i);
         hold on;
         plot(HistVecJumpsCDF, JumpProbCDF(i,:), '-', 'LineWidth', 2, 'Color', colour_element);
         plot(HistVecJumpsCDF, model_CDF(i,:), 'k-', 'LineWidth', 1);
@@ -308,6 +313,7 @@ if DoPlots == 1 % proceed to plotting only if DoPlots == 1
         legend boxoff
         hold off;
     end
+    linkaxes(ax2,'xy'); % link all the axes to synchronize any zooming
     if SavePlot == 1
         set(figure4,'Units','Inches');
         pos = get(figure4,'Position');
@@ -317,6 +323,7 @@ if DoPlots == 1 % proceed to plotting only if DoPlots == 1
 
     %PLOT THE HISTOGRAM OF TRANSLOCATIONS
     figure5 = figure('position',[200 200 300 400]); %[x y width height]
+    set(gcf, 'Name','Spot-On Matlab: histograms of displacements');
     histogram_spacer = 0.055;
     hold on;
     for i=size(JumpProb,1):-1:1

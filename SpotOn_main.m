@@ -1,5 +1,5 @@
-%   SpotOn_main.m      VERSION: 1.04
-%   Copyright (C) 2017 Anders Sejr Hansen & Maxime Woringer
+%   SpotOn_main.m  VERSION: 1.05  Please see https://gitlab.com/tjian-darzacq-lab/spot-on-matlab for documentation
+%   Copyright (C) 2017 Anders Sejr Hansen & Maxime Woringer. 
 clear; clc; clearvars -global; close all; 
 
 %%%%%%%%%%%%%%%%%%%%%%%% GNU LICENSE OVERVIEW %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
